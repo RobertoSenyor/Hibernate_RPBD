@@ -1,6 +1,10 @@
 package Home;
-import City.*;
+import Client.Client;
 import jakarta.persistence.*;
+
+import javax.swing.event.CaretListener;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table (name = "home")
@@ -8,16 +12,11 @@ public class Home
 {
     /**
      *  id             | bigint                 |           | not null | nextval('home_id_seq1'::regclass)
-     *  city_id        | integer                |           |          |
      *  address        | character varying(255) |           | not null | nextval('home_id_seq'::regclass)
      *  number_of_flat | character varying(255) |           | not null |
      */
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
-
-    @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "city_id")
-    private City city;
 
     @Column (name = "address")
     private String address;
@@ -25,5 +24,65 @@ public class Home
     @Column (name = "number_of_flat")
     private String number_of_flat;
 
-    public Home(){}
+
+    @OneToMany (mappedBy = "client", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Client> clients;
+
+    protected Home(){}
+
+    public Home(String address, String number_of_flat)
+    {
+        this.address = address;
+        this.number_of_flat = number_of_flat;
+        clients = new ArrayList<>();
+    }
+
+    public void addClient(Client client)
+    {
+        client.setHome(this);
+        clients.add(client);
+    }
+
+    public void removeClient(Client client)
+    {
+        clients.remove(client);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setNumber_of_flat(String number_of_flat) {
+        this.number_of_flat = number_of_flat;
+    }
+
+    public String getNumber_of_flat() {
+        return number_of_flat;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Home{" +
+                "id=" + id +
+                ", address='" + address + '\'' +
+                ", number_of_flat='" + number_of_flat + '\'' +
+                "}";
+    }
 }
