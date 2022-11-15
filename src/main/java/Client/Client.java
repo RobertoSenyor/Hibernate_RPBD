@@ -1,7 +1,11 @@
 package Client;
 
+import BankAccount.BankAccount;
 import Home.Home;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client
 {
@@ -44,6 +48,9 @@ public class Client
     @JoinColumn(name = "address_id")
     private Home home;
 
+    @OneToMany (mappedBy = "bankaccount", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<BankAccount> bankAccounts;
+
     protected Client(){}
 
     public Client(
@@ -60,6 +67,7 @@ public class Client
         this.serial_of_pasport = serial_of_pasport;
         this.number_of_pasport = number_of_pasport;
         this.telephone = telephone;
+        bankAccounts = new ArrayList<>();
     }
 
     public int getId() {
@@ -120,6 +128,25 @@ public class Client
 
     public Home getHome() {
         return home;
+    }
+
+    public void setBankAccounts(List<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
+
+    public List<BankAccount> getBankAccounts() {
+        return bankAccounts;
+    }
+
+    public void addBankAccount(BankAccount bankAccount)
+    {
+        bankAccount.setClient(this);
+        bankAccounts.add(bankAccount);
+    }
+
+    public void removeBankAccount(BankAccount bankAccount)
+    {
+        bankAccounts.remove(bankAccount);
     }
 
     @Override
