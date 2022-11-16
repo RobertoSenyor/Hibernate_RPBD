@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
+import java.io.File;
+
 public class HibernateSessionFactoryUtil
 {
     private static SessionFactory sessionFactory;
@@ -20,7 +22,8 @@ public class HibernateSessionFactoryUtil
         {
             try
             {
-                Configuration configuration = new Configuration().configure("target/cfg.xml");
+                File config = new File("target/hibernate.cfg.xml");
+                Configuration configuration = new Configuration().configure(config);
                 configuration.addAnnotatedClass(BankAccount.class);
                 configuration.addAnnotatedClass(Client.class);
                 configuration.addAnnotatedClass(Deposit.class);

@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Entity
+@Table (name = "client")
 public class Client
 {
     /**
@@ -48,7 +51,7 @@ public class Client
     @JoinColumn(name = "address_id")
     private Home home;
 
-    @OneToMany (mappedBy = "bankaccount", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany (mappedBy = "client", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<BankAccount> bankAccounts;
 
     protected Client(){}

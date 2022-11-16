@@ -1,4 +1,4 @@
-package service;
+package service.Home;
 
 import DAO.Home.HomeDAOImpl;
 import models.Client.Client;

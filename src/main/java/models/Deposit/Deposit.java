@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table (name = "deposit")
 public class Deposit
 {
     /**
@@ -30,7 +32,7 @@ public class Deposit
     @Column (name = "interest_rate")
     private int interest_rate;
 
-    @OneToMany (mappedBy = "bankaccount", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany (mappedBy = "deposit", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<BankAccount> bankAccounts;
 
     protected Deposit(){}

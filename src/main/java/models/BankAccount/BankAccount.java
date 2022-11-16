@@ -4,6 +4,8 @@ import models.Client.Client;
 import models.Deposit.Deposit;
 import jakarta.persistence.*;
 
+@Entity
+@Table (name = "bankaccount")
 public class BankAccount
 {
     /**

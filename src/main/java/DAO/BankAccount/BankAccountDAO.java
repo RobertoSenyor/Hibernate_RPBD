@@ -1,6 +1,6 @@
 package DAO.BankAccount;
 
-public class BankAccountDAO
+public interface BankAccountDAO
 {
 
 }

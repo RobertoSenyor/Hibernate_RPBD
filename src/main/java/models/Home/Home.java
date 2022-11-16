@@ -23,7 +23,7 @@ public class Home
     @Column (name = "number_of_flat")
     private String number_of_flat;
 
-    @OneToMany (mappedBy = "client", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany (mappedBy = "home", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Client> clients;
 
     protected Home(){}
