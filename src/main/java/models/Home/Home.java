@@ -1,8 +1,7 @@
-package Home;
-import Client.Client;
+package models.Home;
+import models.Client.Client;
 import jakarta.persistence.*;
 
-import javax.swing.event.CaretListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class Home
     @Override
     public String toString()
     {
-        return "Home{" +
+        return "models.Home{" +
                 "id=" + id +
                 ", address='" + address + '\'' +
                 ", number_of_flat='" + number_of_flat + '\'' +

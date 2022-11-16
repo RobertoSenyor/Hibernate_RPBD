@@ -1,14 +1,10 @@
-package Deposit;
+package models.Deposit;
 
-import BankAccount.BankAccount;
-import Client.Client;
+import models.BankAccount.BankAccount;
 import jakarta.persistence.*;
-import org.hibernate.service.spi.InjectService;
 
-import javax.swing.event.CaretListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.DeflaterOutputStream;
 
 public class Deposit
 {
@@ -101,7 +97,7 @@ public class Deposit
     @Override
     public String toString()
     {
-        return "Deposit{" +
+        return "models.Deposit{" +
                 "id=" + id +
                 ",name_of_deposit='" + name_of_deposit + '\'' +
                 ", storage_time=" + storage_time +

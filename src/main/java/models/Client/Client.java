@@ -1,7 +1,7 @@
-package Client;
+package models.Client;
 
-import BankAccount.BankAccount;
-import Home.Home;
+import models.BankAccount.BankAccount;
+import models.Home.Home;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -152,7 +152,7 @@ public class Client
     @Override
     public String toString()
     {
-        return "Client{" +
+        return "models.Client{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
@@ -162,5 +162,4 @@ public class Client
                 ", telephone" + telephone + '\'' +
                 "}";
     }
-
 }

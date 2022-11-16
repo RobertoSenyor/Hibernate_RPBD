@@ -1,7 +1,7 @@
-package BankAccount;
+package models.BankAccount;
 
-import Client.Client;
-import Deposit.Deposit;
+import models.Client.Client;
+import models.Deposit.Deposit;
 import jakarta.persistence.*;
 
 public class BankAccount
@@ -112,7 +112,7 @@ public class BankAccount
     @Override
     public String toString()
     {
-        return "BankAccount{" +
+        return "models.BankAccount{" +
                 "id=" + id +
                 ", number_of_account='" + number_of_account + '\'' +
                 ", date_open='" + date_open + '\'' +
