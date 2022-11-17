@@ -21,7 +21,10 @@ public class BankAccount
      *  money_sum         | integer               |           |          |
      */
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Id
+    @Column (name = "id")
+    @SequenceGenerator(name = "bankaccount_SEQ", sequenceName = "BANKACCOUNT_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bankaccount_SEQ")
     private int id;
 
     @ManyToOne (fetch = FetchType.LAZY)

@@ -15,7 +15,11 @@ public class Home
      *  number_of_flat | character varying(255) |           | not null |
      */
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
+    @Id
+    @Column (name = "id")
+    @SequenceGenerator(name = "home_SEQ", sequenceName = "HOME_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "home_SEQ")
+    private int id;
 
     @Column (name = "address")
     private String address;

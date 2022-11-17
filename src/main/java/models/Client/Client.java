@@ -26,7 +26,10 @@ public class Client
      *  address_id        | integer                |           |          |
      */
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Id
+    @Column (name = "id")
+    @SequenceGenerator(name = "client_SEQ", sequenceName = "CLIENT_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_SEQ")
     private int id;
 
     @Column (name = "name")

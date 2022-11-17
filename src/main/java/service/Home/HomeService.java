@@ -17,14 +17,14 @@ public class HomeService
         return homeDAO.findById(id);
     }
 
-    public Home findHomeByAddress(String address)
+    public List<Home> findHomeByAddress(String address)
     {
         return homeDAO.findByAddress(address);
     }
 
-    public Home findHomeByNumber_of_flat(String number_of_flat)
+    public List<Home> findHomeByNumber_of_flat(String _number_of_flat)
     {
-        return homeDAO.findByNumber_of_flat(number_of_flat);
+        return homeDAO.findByNumber_of_flat(_number_of_flat);
     }
 
     public void saveHome(Home home)
@@ -47,8 +47,8 @@ public class HomeService
         return  homeDAO.findClientById(id);
     }
 
-    public List<Client> findAllClients()
+    public List<Home> findAll()
     {
-        return homeDAO.findAllClients();
+        return homeDAO.findAll();
     }
 }

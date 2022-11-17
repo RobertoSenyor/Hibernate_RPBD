@@ -20,7 +20,10 @@ public class Deposit
      *  interest_rate   | integer |           | not null |
      */
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Id
+    @Column (name = "id")
+    @SequenceGenerator(name = "deposit_SEQ", sequenceName = "DEPOSIT_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deposit_SEQ")
     private int id;
 
     @Column (name = "name_of_deposit")
