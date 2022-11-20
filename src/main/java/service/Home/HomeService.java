@@ -47,7 +47,7 @@ public class HomeService
         return  homeDAO.findClientById(id);
     }
 
-    public List<Home> findAll()
+    public List<Home> findAll(String input)
     {
         return homeDAO.findAll();
     }
