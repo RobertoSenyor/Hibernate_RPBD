@@ -13,10 +13,6 @@ import util.HibernateSessionFactoryUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/** TODO добавить класс Singletone, хранящий объекты сущностей в памяти
- *  Добавить обработку и взаимодействие запросов к данным
- */
-
 public class HomeDAOImpl implements HomeDAO
 {
     @Override
@@ -42,9 +38,10 @@ public class HomeDAOImpl implements HomeDAO
             } catch (Exception e) {
                 System.out.println("Exception HomeDAOImpl findById: " + e);
             } finally {
-                session.close();
+//                session.close();
             }
 
+            if(buf_home!= null)
             Singleton.getInstance().getHomeVector().add(buf_home);
 
             return buf_home;
@@ -57,7 +54,7 @@ public class HomeDAOImpl implements HomeDAO
     public List<Home> findByAddress(String _address)
     {
         Query query = null;
-        List<Home> homes = null;
+        List<Home> homes = new ArrayList<>();
 
         for (Home tmp : Singleton.getInstance().getHomeVector())
         {
@@ -67,7 +64,7 @@ public class HomeDAOImpl implements HomeDAO
             }
         }
 
-        if(homes.size() == 0)
+        if(homes.isEmpty())
         {
             String hql = "from Home where address ilike '%" + _address + "%'";
 
@@ -82,9 +79,11 @@ public class HomeDAOImpl implements HomeDAO
             }
             finally
             {
-                homes = new ArrayList<>(query.list());
-                HibernateSessionFactoryUtil.getSessionFactory().close();
+                homes.addAll(query.list());
+//                HibernateSessionFactoryUtil.getSessionFactory().close();
             }
+
+            if(!homes.isEmpty())
             Singleton.getInstance().getHomeVector().addAll(homes);
 
             return homes;
@@ -96,7 +95,7 @@ public class HomeDAOImpl implements HomeDAO
     public List<Home> findByNumber_of_flat(String _number_of_flat)
     {
         Query query = null;
-        List<Home> homes = null;
+        List<Home> homes = new ArrayList<>();
 
         for (Home tmp : Singleton.getInstance().getHomeVector())
         {
@@ -106,7 +105,7 @@ public class HomeDAOImpl implements HomeDAO
             }
         }
 
-        if(homes.size() == 0)
+        if(homes.isEmpty())
         {
             String hql = "from Home where number_of_flat ilike '%" + _number_of_flat + "%'";
 
@@ -121,10 +120,11 @@ public class HomeDAOImpl implements HomeDAO
             }
             finally
             {
-                homes = new ArrayList<>(query.list());
-                HibernateSessionFactoryUtil.getSessionFactory().close();
+                homes.addAll(query.list());
+//                HibernateSessionFactoryUtil.getSessionFactory().close();
             }
 
+            if(!homes.isEmpty())
             Singleton.getInstance().getHomeVector().addAll(homes);
 
             return homes;
@@ -209,8 +209,10 @@ public class HomeDAOImpl implements HomeDAO
             }
             finally
             {
-                session.close();
+//                session.close();
             }
+
+            if(buf_client!=null)
             Singleton.getInstance().getClientVector().add(buf_client);
 
             return buf_client;
@@ -221,11 +223,11 @@ public class HomeDAOImpl implements HomeDAO
     @Override
     public List<Home> findAll()
     {
-        List<Home> homes = null;
+        List<Home> homes = new ArrayList<>();
 
         try
         {
-            homes = new ArrayList<>((List<Home>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from Home").list());
+            homes.addAll((List<Home>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from Home").list());
         }
         catch (Exception e)
         {
@@ -233,7 +235,7 @@ public class HomeDAOImpl implements HomeDAO
         }
         finally
         {
-            HibernateSessionFactoryUtil.getSessionFactory().close();
+//            HibernateSessionFactoryUtil.getSessionFactory().close();
         }
 
         return homes;

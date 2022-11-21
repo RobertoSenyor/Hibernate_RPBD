@@ -4,6 +4,10 @@ import models.Client.Client;
 import models.Deposit.Deposit;
 import jakarta.persistence.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Entity
 @Table (name = "bankaccount")
 public class BankAccount
@@ -39,10 +43,10 @@ public class BankAccount
     private String number_of_account;
 
     @Column (name = "date_open")
-    private String date_open;
+    private Date date_open;
 
     @Column (name = "date_close")
-    private String date_close;
+    private Date date_close;
 
     @Column (name = "money_sum")
     private int money_sum;
@@ -57,8 +61,15 @@ public class BankAccount
     )
     {
         this.number_of_account = number_of_account;
-        this.date_open = date_open;
-        this.date_close = date_close;
+
+        String[] parts = date_open.split("-");
+
+        this.date_open = new Date(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),Integer.parseInt(parts[2]));
+
+        String[] parts1 = date_close.split("-");
+
+        this.date_close = new Date(Integer.parseInt(parts1[0]),Integer.parseInt(parts1[1]),Integer.parseInt(parts1[2]));
+
         this.money_sum = money_sum;
     }
 
@@ -90,19 +101,25 @@ public class BankAccount
         return number_of_account;
     }
 
-    public void setDate_open(String date_open) {
-        this.date_open = date_open;
+    public void setDate_open(String date_open)
+    {
+        String[] parts = date_open.split("-");
+
+        this.date_open = new Date(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),Integer.parseInt(parts[2]));
     }
 
-    public String getDate_open() {
+    public Date getDate_open() {
         return date_open;
     }
 
-    public void setDate_close(String date_close) {
-        this.date_close = date_close;
+    public void setDate_close(String date_close)
+    {
+        String[] parts1 = date_close.split("-");
+
+        this.date_close = new Date(Integer.parseInt(parts1[0]),Integer.parseInt(parts1[1]),Integer.parseInt(parts1[2]));
     }
 
-    public String getDate_close() {
+    public Date getDate_close() {
         return date_close;
     }
 
@@ -114,14 +131,34 @@ public class BankAccount
         return money_sum;
     }
 
+    public boolean isAfterOpenDate(String dateFrom) throws ParseException
+    {
+        return (date_open.after(new SimpleDateFormat("yyyy-MM-dd").parse(dateFrom)));
+    }
+
+    public boolean isBeforeOpenDate(String dateTo) throws ParseException
+    {
+        return (date_open.before(new SimpleDateFormat("yyyy-MM-dd").parse(dateTo)));
+    }
+
+    public boolean isAfterCloseDate(String dateFrom) throws ParseException
+    {
+        return (date_close.after(new SimpleDateFormat("yyyy-MM-dd").parse(dateFrom)));
+    }
+
+    public boolean isBeforeCloseDate(String dateTo) throws ParseException
+    {
+        return (date_close.before(new SimpleDateFormat("yyyy-MM-dd").parse(dateTo)));
+    }
+
     @Override
     public String toString()
     {
         return "models.BankAccount{" +
                 "id=" + id +
                 ", number_of_account='" + number_of_account + '\'' +
-                ", date_open='" + date_open + '\'' +
-                ", date_close='" + date_close + '\'' +
+                ", date_open='" + new SimpleDateFormat("yyyy-MM-dd").format(date_open) + '\'' +
+                ", date_close='" + new SimpleDateFormat("yyyy-MM-dd").format(date_close) + '\'' +
                 ", money_sum=" + money_sum +
                 "}";
     }
