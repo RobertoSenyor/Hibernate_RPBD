@@ -76,11 +76,11 @@ public interface ClientDAO
     public void delete(Client client);
 
     /**
-     * Найти запись адреса по id (сначала в памяти, потом в БД)
+     * Найти запись банковского счёта по id (сначала в памяти, потом в БД)
      * @param id
-     * @return Object=Home
+     * @return Object=BankAccount
      */
-    public Home findHomeById(int id);
+    public BankAccount findBankAccountById(int id);
 
     /**
      * Ищет все записи Client в БД

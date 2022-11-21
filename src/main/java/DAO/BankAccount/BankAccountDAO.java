@@ -77,20 +77,6 @@ public interface BankAccountDAO
     public void delete(BankAccount bankAccount);
 
     /**
-     * Найти запись клиента по id (сначала в памяти, потом в БД)
-     * @param id
-     * @return Object=Client
-     */
-    public Client findClientById(int id);
-
-    /**
-     * Найти запись вклада по id (сначала в памяти, потом в БД)
-     * @param id
-     * @return Object=Depoosit
-     */
-    public Deposit findDepositById(int id);
-
-    /**
      * Ищет все записи BankAccount в БД
      * @return List<BankAccount>
      */

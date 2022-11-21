@@ -43,8 +43,6 @@ public class HomeDAOImpl implements HomeDAO
 
             if(buf_home!= null)
             Singleton.getInstance().getHomeVector().add(buf_home);
-
-            return buf_home;
         }
 
         return buf_home;
@@ -85,8 +83,6 @@ public class HomeDAOImpl implements HomeDAO
 
             if(!homes.isEmpty())
             Singleton.getInstance().getHomeVector().addAll(homes);
-
-            return homes;
         }
         return homes;
     }
@@ -126,8 +122,6 @@ public class HomeDAOImpl implements HomeDAO
 
             if(!homes.isEmpty())
             Singleton.getInstance().getHomeVector().addAll(homes);
-
-            return homes;
         }
 
         return homes;
@@ -214,9 +208,8 @@ public class HomeDAOImpl implements HomeDAO
 
             if(buf_client!=null)
             Singleton.getInstance().getClientVector().add(buf_client);
-
-            return buf_client;
         }
+
         return buf_client;
     }
 

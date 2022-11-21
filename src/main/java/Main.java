@@ -15,26 +15,6 @@ public class Main
 {
     public static void main(String[] args) throws ParseException
     {
-        BankAccountService bankAccountService = new BankAccountService();
-
-        bankAccountService.findBankAccountByDate_open("2010-07-04");
-        bankAccountService.findBankAccountById(1);
-        bankAccountService.findBankAccountById(1);
-        bankAccountService.findBankAccountById(1);
-        bankAccountService.findBankAccountById(26);
-//        bankAccountService.deleteBankAccount(account);
-        bankAccountService.findBankAccountByDate_open("2002-12-10");
-
-        System.out.println(Singleton.getInstance().getBankAccountVector());
-
-//------------------------------------------------------------------------------------------------------------
-
-//        BankAccount bankAccount = new BankAccountService().findBankAccountById(1);
-//
-//        System.out.println(bankAccount.isAfterOpenDate("2010-01-01")&&bankAccount.isBeforeOpenDate("2030-01-10"));
-
-//------------------------------------------------------------------------------------------------------------
-
 //        HomeService homeService = new HomeService();
 //
 //        Home home = homeService.findHomeById(1);

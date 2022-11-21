@@ -48,9 +48,8 @@ public class BankAccountDAOImpl implements BankAccountDAO
             }
             if(buf_bankaccounts != null)
                 Singleton.getInstance().getBankAccountVector().add(buf_bankaccounts);
-
-            return buf_bankaccounts;
         }
+
         return buf_bankaccounts;
     }
 
@@ -86,8 +85,6 @@ public class BankAccountDAOImpl implements BankAccountDAO
             }
             if(!bankAccounts.isEmpty())
                 Singleton.getInstance().getBankAccountVector().addAll(bankAccounts);
-
-            return bankAccounts;
         }
 
         return bankAccounts;
@@ -105,28 +102,20 @@ public class BankAccountDAOImpl implements BankAccountDAO
                 bankAccounts.add(tmp);
         }
 
-        if(bankAccounts.isEmpty())
-        {
+        if(bankAccounts.isEmpty()) {
             String hql = "from BankAccount where date_open = '" + _date_open.toString() + "'";
 
-            try
-            {
+            try {
                 query = HibernateSessionFactoryUtil.getSessionFactory().openSession().
                         createQuery(hql, BankAccount.class);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println("Exception BankAccountDAOImpl findByDate_open: " + e);
-            }
-            finally
-            {
+            } finally {
                 bankAccounts.addAll(query.list());
 //                HibernateSessionFactoryUtil.getSessionFactory().close();
             }
-            if(!bankAccounts.isEmpty())
-            Singleton.getInstance().getBankAccountVector().addAll(bankAccounts);
-
-            return bankAccounts;
+            if (!bankAccounts.isEmpty())
+                Singleton.getInstance().getBankAccountVector().addAll(bankAccounts);
         }
 
         return bankAccounts;
@@ -164,8 +153,6 @@ public class BankAccountDAOImpl implements BankAccountDAO
             }
             if(!bankAccounts.isEmpty())
             Singleton.getInstance().getBankAccountVector().addAll(bankAccounts);
-
-            return bankAccounts;
         }
 
         return bankAccounts;
@@ -183,28 +170,20 @@ public class BankAccountDAOImpl implements BankAccountDAO
                 bankAccounts.add(tmp);
         }
 
-        if(bankAccounts.isEmpty())
-        {
+        if(bankAccounts.isEmpty()) {
             String hql = "from BankAccount where money_sum = '" + money_sum + "'";
 
-            try
-            {
+            try {
                 query = HibernateSessionFactoryUtil.getSessionFactory().openSession().
                         createQuery(hql, BankAccount.class);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println("Exception BankAccountDAOImpl findByMoney_sum: " + e);
-            }
-            finally
-            {
+            } finally {
                 bankAccounts.addAll(query.list());
 //                HibernateSessionFactoryUtil.getSessionFactory().close();
             }
-            if(!bankAccounts.isEmpty())
-            Singleton.getInstance().getBankAccountVector().addAll(bankAccounts);
-
-            return bankAccounts;
+            if (!bankAccounts.isEmpty())
+                Singleton.getInstance().getBankAccountVector().addAll(bankAccounts);
         }
 
         return bankAccounts;
@@ -244,8 +223,6 @@ public class BankAccountDAOImpl implements BankAccountDAO
             }
             if(!bankAccounts.isEmpty())
             Singleton.getInstance().getBankAccountVector().addAll(bankAccounts);
-
-            return bankAccounts;
         }
 
         return bankAccounts;
@@ -283,8 +260,6 @@ public class BankAccountDAOImpl implements BankAccountDAO
             }
             if(!bankAccounts.isEmpty())
             Singleton.getInstance().getBankAccountVector().addAll(bankAccounts);
-
-            return bankAccounts;
         }
 
         return bankAccounts;
@@ -337,82 +312,6 @@ public class BankAccountDAOImpl implements BankAccountDAO
             session.close();
         }
         else return;
-    }
-
-    @Override
-    public Client findClientById(int id)
-    {
-        Session session = null;
-        Client buf_client = null;
-
-        for (Client tmp : Singleton.getInstance().getClientVector())
-        {
-            if(id == tmp.getId())
-            {
-                buf_client = tmp;
-                break;
-            }
-        }
-
-        if(buf_client == null)
-        {
-            try
-            {
-                session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-                buf_client = session.get(Client.class, id);
-            }
-            catch (Exception e)
-            {
-                System.out.println("Exception BankAccountDAOImpl findClientById: " + e);
-            }
-            finally
-            {
-                session.close();
-            }
-            if(buf_client != null)
-            Singleton.getInstance().getClientVector().add(buf_client);
-
-            return buf_client;
-        }
-        return buf_client;
-    }
-
-    @Override
-    public Deposit findDepositById(int id)
-    {
-        Session session = null;
-        Deposit buf_deposit = null;
-
-        for (Deposit tmp : Singleton.getInstance().getDepositVector())
-        {
-            if(id == tmp.getId())
-            {
-                buf_deposit = tmp;
-                break;
-            }
-        }
-
-        if(buf_deposit == null)
-        {
-            try
-            {
-                session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-                buf_deposit = session.get(Deposit.class, id);
-            }
-            catch (Exception e)
-            {
-                System.out.println("Exception BankAccountDAOImpl findDepositById: " + e);
-            }
-            finally
-            {
-                session.close();
-            }
-            if(buf_deposit != null)
-            Singleton.getInstance().getDepositVector().add(buf_deposit);
-
-            return buf_deposit;
-        }
-        return buf_deposit;
     }
 
     @Override
