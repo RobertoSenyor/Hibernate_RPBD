@@ -18,24 +18,24 @@ public interface BankAccountDAO
 
     /**
      * Найти запись по полному или частичному совпадению номеру счёта (сначала в памяти, потом в БД)
-     * @param _number_of_account
+     * @param number_of_account
      * @return List
      */
-    public List<BankAccount> findByNumber_of_account(String _number_of_account);
+    public List<BankAccount> findByNumber_of_account(String number_of_account);
 
     /**
      * Найти запись по точной дате открытия счёта (сначала в памяти, потом в БД)
-     * @param _date_open
+     * @param date_open
      * @return List
      */
-    public List<BankAccount> findByDate_open(String _date_open);
+    public List<BankAccount> findByDate_open(String date_open);
 
     /**
      * Найти запись по точной дате закрытия счёта (сначала в памяти, потом в БД)
-     * @param _date_close
+     * @param date_close
      * @return List
      */
-    public List<BankAccount> findByDate_close(String _date_close);
+    public List<BankAccount> findByDate_close(String date_close);
 
     /**
      * Найти запись по сумме денег на счете (сначала в памяти, потом в БД)

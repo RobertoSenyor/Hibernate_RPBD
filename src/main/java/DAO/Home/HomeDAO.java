@@ -23,10 +23,10 @@ public interface HomeDAO
 
     /**
      * Найти запись по полному или частичному совпадению номера квартиры (сначала в памяти, потом в БД)
-     * @param _number_of_flat
+     * @param number_of_flat
      * @return List
      */
-    public List<Home> findByNumber_of_flat(String _number_of_flat);
+    public List<Home> findByNumber_of_flat(String number_of_flat);
 
     /**
      * Сохранить запись
