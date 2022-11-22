@@ -81,10 +81,13 @@ public class Home
     @Override
     public String toString()
     {
-        return "models.Home{" +
-                "id=" + id +
-                ", address='" + address + '\'' +
-                ", number_of_flat='" + number_of_flat + '\'' +
-                "}";
+        return  "address='" + address + '\'' +
+                ", number_of_flat='" + number_of_flat + '\'';
+
+//        return "models.Home{" +
+//                "id=" + id +
+//                ", address='" + address + '\'' +
+//                ", number_of_flat='" + number_of_flat + '\'' +
+//                "}";
     }
 }

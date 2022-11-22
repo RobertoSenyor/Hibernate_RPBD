@@ -83,7 +83,7 @@ public class HomeService
      * Ищет все записи Home в БД
      * @return List<Home>
      */
-    public List<Home> findAll(String input)
+    public List<Home> findAll()
     {
         return homeDAO.findAll();
     }

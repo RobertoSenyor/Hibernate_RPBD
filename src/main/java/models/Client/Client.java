@@ -158,14 +158,21 @@ public class Client
     @Override
     public String toString()
     {
-        return "models.Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return  "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", fathername='" + fathername + '\'' +
                 ", serial_of_pasport=" + serial_of_pasport +
                 ", number_of_pasport=" + number_of_pasport +
-                ", telephone" + telephone + '\'' +
-                "}";
+                ", telephone" + telephone + '\'';
+
+//        return "models.Client{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", surname='" + surname + '\'' +
+//                ", fathername='" + fathername + '\'' +
+//                ", serial_of_pasport=" + serial_of_pasport +
+//                ", number_of_pasport=" + number_of_pasport +
+//                ", telephone" + telephone + '\'' +
+//                "}";
     }
 }
