@@ -16,6 +16,14 @@ public interface ClientDAO
     public Client findById(int id);
 
     /**
+     * Найти клиента по имени и фамилии
+     * @param name
+     * @param surname
+     * @return List
+     */
+    public List<Client> findByName_Surname(String name, String surname);
+
+    /**
      * Найти запись по полному или частичному совпадению имени (сначала в памяти, потом в БД)
      * @param name
      * @return List

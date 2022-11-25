@@ -49,6 +49,45 @@ public class ClientDAOImpl implements ClientDAO
     }
 
     @Override
+    public List<Client> findByName_Surname(String name, String surname)
+    {
+        Query query = null;
+        List<Client> clients = new ArrayList<>();
+
+        for (Client tmp : Singleton.getInstance().getClientVector())
+        {
+            if(tmp.getName().toLowerCase().contains(name.toLowerCase()) && tmp.getSurname().toLowerCase().contains(surname.toLowerCase()))
+            {
+                clients.add(tmp);
+            }
+        }
+
+        if(clients.isEmpty())
+        {
+            String hql = "from Client where name ilike '%" + name + "%' and surname ilike '%" + surname + "%'";
+
+            try
+            {
+                query = HibernateSessionFactoryUtil.getSessionFactory().openSession().
+                        createQuery(hql, Client.class);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Exception ClientDAOImpl findByName: " + e);
+            }
+            finally
+            {
+                clients.addAll(query.list());
+            }
+
+            if(!clients.isEmpty())
+                Singleton.getInstance().getClientVector().addAll(clients);
+        }
+
+        return clients;
+    }
+
+    @Override
     public List<Client> findByName(String name)
     {
         Query query = null;

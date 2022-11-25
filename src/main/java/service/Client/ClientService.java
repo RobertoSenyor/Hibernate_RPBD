@@ -20,6 +20,11 @@ public class ClientService
         return clientDAO.findById(id);
     }
 
+    public List<Client> findClientByName_Surname(String name, String surname)
+    {
+        return clientDAO.findByName_Surname(name, surname);
+    }
+
     /**
      * Найти запись по полному или частичному совпадению имени (сначала в памяти, потом в БД)
      * @param name

@@ -102,11 +102,19 @@ public class Deposit
     @Override
     public String toString()
     {
-        return "models.Deposit{" +
-                "id=" + id +
-                ",name_of_deposit='" + name_of_deposit + '\'' +
-                ", storage_time=" + storage_time +
-                ", interest_rate=" + interest_rate +
-                "}";
+        String out_string_data = String.format("%20s%5d%5d", name_of_deposit,storage_time,interest_rate);
+
+        return out_string_data;
+
+//        return  "name_of_deposit='" + name_of_deposit + '\'' +
+//                ", storage_time='" + storage_time + '\'' +
+//                ", interest_rate='" + interest_rate + '\'';
+
+//        return "models.Deposit{" +
+//                "id=" + id +
+//                ",name_of_deposit='" + name_of_deposit + '\'' +
+//                ", storage_time=" + storage_time +
+//                ", interest_rate=" + interest_rate +
+//                "}";
     }
 }

@@ -2,6 +2,7 @@ package DAO.Deposit;
 
 import Singleton.Singleton;
 import models.BankAccount.BankAccount;
+import models.Client.Client;
 import models.Deposit.Deposit;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -45,6 +46,44 @@ public class DepositDAOImpl implements DepositDAO
         }
 
         return buf_deposit;
+    }
+
+    @Override
+    public List<Deposit> findByName_of_deposit(String name_of_deposit) {
+        Query query = null;
+        List<Deposit> deposits = new ArrayList<>();
+
+        for (Deposit tmp : Singleton.getInstance().getDepositVector())
+        {
+            if(tmp.getName_of_deposit().toLowerCase().contains(name_of_deposit.toLowerCase()))
+            {
+                deposits.add(tmp);
+            }
+        }
+
+        if(deposits.isEmpty())
+        {
+            String hql = "from Deposit where name_of_deposit ilike '%" + name_of_deposit + "%'";
+
+            try
+            {
+                query = HibernateSessionFactoryUtil.getSessionFactory().openSession().
+                        createQuery(hql, Deposit.class);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Exception DepositDAOImpl findByName_of_deposit: " + e);
+            }
+            finally
+            {
+                deposits.addAll(query.list());
+            }
+
+            if(!deposits.isEmpty())
+                Singleton.getInstance().getDepositVector().addAll(deposits);
+        }
+
+        return deposits;
     }
 
     @Override
@@ -209,11 +248,17 @@ public class DepositDAOImpl implements DepositDAO
 
     @Override
     public List<Deposit> findAll() {
-        return null;
-    }
+        List<Deposit> deposits = new ArrayList<>();
 
-    @Override
-    public List<Deposit> findByName_of_deposit(String name_of_deposit) {
-        return null;
+        try
+        {
+            deposits.addAll((List<Deposit>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("from Deposit").list());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Exception DepositDAOImpl findAll: " + e);
+        }
+
+        return deposits;
     }
 }

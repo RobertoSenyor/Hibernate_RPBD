@@ -58,17 +58,14 @@ public class BankAccount
             String date_open,
             String date_close,
             int money_sum
-    )
-    {
+    ) throws ParseException {
         this.number_of_account = number_of_account;
 
-        String[] parts = date_open.split("-");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        this.date_open = new Date(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),Integer.parseInt(parts[2]));
+        this.date_open = dateFormat.parse(date_open);
 
-        String[] parts1 = date_close.split("-");
-
-        this.date_close = new Date(Integer.parseInt(parts1[0]),Integer.parseInt(parts1[1]),Integer.parseInt(parts1[2]));
+        this.date_open = dateFormat.parse(date_close);
 
         this.money_sum = money_sum;
     }
@@ -85,7 +82,8 @@ public class BankAccount
         return client;
     }
 
-    public void setDeposit(Deposit depoosit) {
+
+    public void setDeposit(Deposit deposit) {
         this.deposit = deposit;
     }
 
@@ -101,11 +99,20 @@ public class BankAccount
         return number_of_account;
     }
 
-    public void setDate_open(String date_open)
+    public void setDate_open(String _date_open)
     {
-        String[] parts = date_open.split("-");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
 
-        this.date_open = new Date(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),Integer.parseInt(parts[2]));
+        try
+        {
+            this.date_open = dateFormat.parse(_date_open);
+        }
+        catch (Exception e)
+        {
+            System.out.println(
+                    "Exception BankAccount.java setDate_open: " + e);
+        }
     }
 
     public Date getDate_open() {
@@ -114,17 +121,33 @@ public class BankAccount
 
     public void setDate_close(String date_close)
     {
-        String[] parts1 = date_close.split("-");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
 
-        this.date_close = new Date(Integer.parseInt(parts1[0]),Integer.parseInt(parts1[1]),Integer.parseInt(parts1[2]));
+        try
+        {
+            this.date_close = dateFormat.parse(date_close);
+        }
+        catch (Exception e)
+        {
+            System.out.println(
+                    "Exception BankAccount.java setDate_close: " + e);
+        }
     }
 
     public Date getDate_close() {
         return date_close;
     }
 
-    public void setMoney_sum(int money_sum) {
+    public boolean setMoney_sum(int money_sum) {
+
+        if (money_sum < 0)
+        {
+//            System.out.println("\nmoney_sum must be > 0");
+            return false;
+        }
         this.money_sum = money_sum;
+        return true;
     }
 
     public int getMoney_sum() {
@@ -154,12 +177,22 @@ public class BankAccount
     @Override
     public String toString()
     {
-        return "models.BankAccount{" +
-                "id=" + id +
-                ", number_of_account='" + number_of_account + '\'' +
-                ", date_open='" + new SimpleDateFormat("yyyy-MM-dd").format(date_open) + '\'' +
-                ", date_close='" + new SimpleDateFormat("yyyy-MM-dd").format(date_close) + '\'' +
-                ", money_sum=" + money_sum +
-                "}";
+        String out_string_data = String.format("%-30s%12s%13s%12d", number_of_account,new SimpleDateFormat("yyyy-MM-dd").format(date_open),
+                new SimpleDateFormat("yyyy-MM-dd").format(date_close), money_sum);
+
+        return out_string_data;
+
+//        return  "number_of_account='" + number_of_account + '\'' +
+//                ", date_open='" + new SimpleDateFormat("yyyy-MM-dd").format(date_open) + '\'' +
+//                ", date_close='" + new SimpleDateFormat("yyyy-MM-dd").format(date_close) + '\'' +
+//                ", money_sum=" + money_sum;
+
+//        return "models.BankAccount{" +
+//                "id=" + id +
+//                ", number_of_account='" + number_of_account + '\'' +
+//                ", date_open='" + new SimpleDateFormat("yyyy-MM-dd").format(date_open) + '\'' +
+//                ", date_close='" + new SimpleDateFormat("yyyy-MM-dd").format(date_close) + '\'' +
+//                ", money_sum=" + money_sum +
+//                "}";
     }
 }

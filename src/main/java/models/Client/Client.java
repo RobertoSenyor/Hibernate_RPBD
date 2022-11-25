@@ -4,6 +4,7 @@ import models.BankAccount.BankAccount;
 import models.Home.Home;
 import jakarta.persistence.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,12 +159,16 @@ public class Client
     @Override
     public String toString()
     {
-        return  "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", fathername='" + fathername + '\'' +
-                ", serial_of_pasport=" + serial_of_pasport +
-                ", number_of_pasport=" + number_of_pasport +
-                ", telephone" + telephone + '\'';
+        String out_string_data = String.format("%12s%12s%12s%10d%8d%20s", name,surname,fathername,serial_of_pasport,number_of_pasport,telephone);
+
+        return out_string_data;
+//
+//        return  "name='" + name + '\'' +
+//                ", surname='" + surname + '\'' +
+//                ", fathername='" + fathername + '\'' +
+//                ", serial_of_pasport=" + serial_of_pasport +
+//                ", number_of_pasport=" + number_of_pasport +
+//                ", telephone" + telephone + '\'';
 
 //        return "models.Client{" +
 //                "id=" + id +
