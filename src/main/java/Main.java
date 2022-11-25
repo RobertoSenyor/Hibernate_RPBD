@@ -1,6 +1,11 @@
 import Menu.menu;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import models.BankAccount.BankAccount;
 import models.Client.Client;
 import models.Home.Home;
 import service.BankAccount.BankAccountService;
@@ -34,19 +39,5 @@ public class Main
     public static void main(String[] args) throws ParseException, IOException
     {
         new menu();
-
-        //        BankAccountService accountService = new BankAccountService();
-        //        ClientService clientService = new ClientService();
-        //        DepositService depositService = new DepositService();
-        //        HomeService homeService = new HomeService();
-        //
-        //        Client
-        //                client = clientService.findClientById(1);
-        //        Home home = homeService.findHomeById(1);
-        //
-        //        System.out.println(client.toString() + ", " + client.getHome().toString());
-        //        System.out.println(home.getClients());
-
-        //        test_select();
     }
 }
