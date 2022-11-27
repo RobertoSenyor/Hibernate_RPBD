@@ -11,6 +11,26 @@ public class DepositService
 {
     private DepositDAOImpl depositDAO = new DepositDAOImpl();
 
+    /**
+     * Получить количество существующих записей
+     * @return int=count
+     */
+    public int get_count_nodes()
+    {
+        return depositDAO.get_count_nodes();
+    }
+
+    /**
+     * Найти записи в количестве step
+     * @param id
+     * @param step
+     * @return List
+     */
+    public List<Deposit> findNoOneDepositById(int id, int step)
+    {
+        return depositDAO.findNoOneById(id, step);
+    }
+
     public DepositService(){}
 
     /**

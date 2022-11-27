@@ -9,11 +9,199 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import util.HibernateSessionFactoryUtil;
 
+import java.security.Signature;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DepositDAOImpl implements DepositDAO
 {
+    @Override
+    public int get_count_nodes()
+    {
+        int size = 0;
+
+        Session session = null;
+
+        if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+        {
+            session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+            if (session.getTransaction().isActive())
+            {
+                Transaction transaction = session.getTransaction();
+
+                try
+                {
+                    size = session.createQuery("from Deposit").list().size();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception DepositDAOImpl get_count: " + e);
+                }
+                finally
+                {
+                    transaction.commit();
+                }
+            }
+            else
+            {
+                Transaction transaction = session.beginTransaction();
+
+                try
+                {
+                    size = session.createQuery("from Deposit").list().size();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception DepositDAOImpl get_count: " + e);
+                }
+            }
+        }
+        else
+        {
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+            if (session.getTransaction().isActive())
+            {
+                Transaction transaction = session.getTransaction();
+
+                try
+                {
+                    size = session.createQuery("from Deposit").list().size();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception DepositDAOImpl get_count: " + e);
+                }
+                finally
+                {
+                    transaction.commit();
+                }
+            }
+            else
+            {
+                Transaction transaction = session.beginTransaction();
+
+                try
+                {
+                    size = session.createQuery("from Deposit").list().size();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception DepositDAOImpl get_count: " + e);
+                }
+            }
+        }
+
+        return size;
+    }
+
+    @Override
+    public List<Deposit> findNoOneById(int id, int step)
+    {
+        Query query = null;
+        List<Deposit> deposits = new ArrayList<>();
+
+        Singleton.getInstance().getDepositVector().clear();
+
+        String hql = "from Deposit where id >= " + id + " order by id limit " + step;
+
+        Session session = null;
+
+        if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+        {
+            session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+            if (session.getTransaction().isActive())
+            {
+                Transaction transaction = session.getTransaction();
+
+                try
+                {
+                    query = session.createQuery(hql, Deposit.class);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception DepositDAOImpl find_no_one: " + e);
+                }
+                finally
+                {
+                    deposits.addAll(query.list());
+                    transaction.commit();
+                }
+                if (!deposits.isEmpty())
+                    Singleton.getInstance().getDepositVector().addAll(deposits);
+            }
+            else
+            {
+                Transaction transaction = session.beginTransaction();
+
+                try
+                {
+                    query = session.createQuery(hql, Deposit.class);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception DepositDAOImpl find_no_one: " + e);
+                }
+                finally
+                {
+                    deposits.addAll(query.list());
+                }
+                if (!deposits.isEmpty())
+                    Singleton.getInstance().getDepositVector().addAll(deposits);
+            }
+        }
+        else
+        {
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+            if (session.getTransaction().isActive())
+            {
+                Transaction transaction = session.getTransaction();
+
+                try
+                {
+                    query = session.createQuery(hql, Deposit.class);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception DepositDAOImpl find_no_one: " + e);
+                }
+                finally
+                {
+                    deposits.addAll(query.list());
+                    transaction.commit();
+                }
+                if (!deposits.isEmpty())
+                    Singleton.getInstance().getDepositVector().addAll(deposits);
+            }
+            else
+            {
+                Transaction transaction = session.beginTransaction();
+
+                try
+                {
+                    query = session.createQuery(hql, Deposit.class);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception DepositDAOImpl find_no_one: " + e);
+                }
+                finally
+                {
+                    deposits.addAll(query.list());
+                    transaction.commit();
+                }
+                if (!deposits.isEmpty())
+                    Singleton.getInstance().getDepositVector().addAll(deposits);
+
+            }
+        }
+
+        return deposits;
+    }
+
     @Override
     public Deposit findById(int id)
     {
@@ -102,7 +290,8 @@ public class DepositDAOImpl implements DepositDAO
 
         if(deposits.isEmpty())
         {
-            String hql = "from Deposit where storage_time::varchar ilike '%" + String.valueOf(storage_time) + "%'";
+            String hql =
+                    "from Deposit where substring(cast(storage_time as char(10)), 1, 10) ilike '%" + storage_time + "%'";
 
             try
             {
@@ -141,7 +330,8 @@ public class DepositDAOImpl implements DepositDAO
 
         if(deposits.isEmpty())
         {
-            String hql = "from Deposit where interest_rate::varchar ilike '%" + String.valueOf(interest_rate) + "%'";
+            String hql =
+                    "from Deposit where substring(cast(interest_rate as char(10)), 1, 10) ilike '%" + interest_rate + "%'";
 
             try
             {
@@ -167,49 +357,254 @@ public class DepositDAOImpl implements DepositDAO
     @Override
     public void save(Deposit deposit)
     {
-        if(deposit != null)
+        if (deposit != null)
         {
             Singleton.getInstance().getDepositVector().add(deposit);
 
-            Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-            Transaction save_query = session.beginTransaction();
-            session.persist(deposit);
-            save_query.commit();
-            session.close();
+            Session session = null;
+
+            if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction save_query = session.getTransaction();
+
+                    try
+                    {
+                        session.persist(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl save: " + e);
+                    }
+                    finally
+                    {
+                        save_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction save_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.persist(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl update: " + e);
+                    }
+                }
+            }
+            else
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction save_query = session.getTransaction();
+
+                    try
+                    {
+                        session.persist(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl save: " + e);
+                    }
+                    finally
+                    {
+                        save_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction save_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.persist(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl save: " + e);
+                    }
+                }
+            }
         }
-        else return;
+        else
+            return;
     }
 
     @Override
     public void update(Deposit deposit)
     {
-        if(deposit != null)
+        if (deposit != null)
         {
-            Singleton.getInstance().getDepositVector().add(deposit);
+            Singleton.getInstance().getDepositVector().set(
+                    Singleton.getInstance().getDepositVector().indexOf(deposit), deposit);
 
-            Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-            Transaction save_query = session.beginTransaction();
-            session.merge(deposit);
-            save_query.commit();
-            session.close();
+            Session session = null;
+
+            if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction update_query = session.getTransaction();
+
+                    try
+                    {
+                        session.merge(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl update: " + e);
+                    }
+                    finally
+                    {
+                        update_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction update_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.merge(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl update: " + e);
+                    }
+                }
+            }
+            else
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction update_query = session.getTransaction();
+
+                    try
+                    {
+                        session.merge(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl update: " + e);
+                    }
+                    finally
+                    {
+                        update_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction update_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.merge(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl update: " + e);
+                    }
+                }
+            }
         }
-        else return;
+        else
+            return;
     }
 
     @Override
     public void delete(Deposit deposit)
     {
-        if(deposit != null)
+        if (deposit != null)
         {
-            Singleton.getInstance().getDepositVector().add(deposit);
+            Singleton.getInstance().getDepositVector().remove(deposit);
 
-            Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-            Transaction save_query = session.beginTransaction();
-            session.delete(deposit);
-            save_query.commit();
-            session.close();
+            Session session = null;
+
+            if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction delete_query = session.getTransaction();
+
+                    try
+                    {
+                        session.delete(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl delete: " + e);
+                    }
+                    finally
+                    {
+                        delete_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction delete_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.delete(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl delete: " + e);
+                    }
+                }
+            }
+            else
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction delete_query = session.getTransaction();
+
+                    try
+                    {
+                        session.delete(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl delete: " + e);
+                    }
+                    finally
+                    {
+                        delete_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction delete_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.delete(deposit);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("DepositDAOImpl delete: " + e);
+                    }
+                }
+            }
         }
-        else return;
+        else
+            return;
     }
 
     @Override
@@ -236,7 +631,7 @@ public class DepositDAOImpl implements DepositDAO
             }
             catch (Exception e)
             {
-                System.out.println("Exception ClientDAOImpl findBankAccountById: " + e);
+                System.out.println("Exception DepositDAOImpl findBankAccountById: " + e);
             }
 
             if(buf_account != null)

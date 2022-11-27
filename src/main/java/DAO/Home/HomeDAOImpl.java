@@ -4,7 +4,6 @@ import Singleton.Singleton;
 import models.Client.Client;
 import models.Home.Home;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import org.hibernate.query.Query;
@@ -15,6 +14,192 @@ import java.util.List;
 
 public class HomeDAOImpl implements HomeDAO
 {
+    @Override
+    public int get_count_nodes()
+    {
+        int size = 0;
+
+        Session session = null;
+
+        if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+        {
+            session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+            if (session.getTransaction().isActive())
+            {
+                Transaction transaction = session.getTransaction();
+
+                try
+                {
+                    size = session.createQuery("from Home").list().size();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception HomeDAOImpl get_count: " + e);
+                }
+                finally
+                {
+                    transaction.commit();
+                }
+            }
+            else
+            {
+                Transaction transaction = session.beginTransaction();
+
+                try
+                {
+                    size = session.createQuery("from Home").list().size();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception HomeDAOImpl get_count: " + e);
+                }
+            }
+        }
+        else
+        {
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+            if (session.getTransaction().isActive())
+            {
+                Transaction transaction = session.getTransaction();
+
+                try
+                {
+                    size = session.createQuery("from Home").list().size();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception HomeDAOImpl get_count: " + e);
+                }
+                finally
+                {
+                    transaction.commit();
+                }
+            }
+            else
+            {
+                Transaction transaction = session.beginTransaction();
+
+                try
+                {
+                    size = session.createQuery("from Home").list().size();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception HomeDAOImpl get_count: " + e);
+                }
+            }
+        }
+
+        return size;
+    }
+
+    @Override
+    public List<Home> findNoOneById(int id, int step)
+    {
+        Query query = null;
+        List<Home> homes = new ArrayList<>();
+
+        Singleton.getInstance().getHomeVector().clear();
+
+        String hql = "from Home where id >= " + id + " order by id limit " + step;
+
+        Session session = null;
+
+        if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+        {
+            session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+            if (session.getTransaction().isActive())
+            {
+                Transaction transaction = session.getTransaction();
+
+                try
+                {
+                    query = session.createQuery(hql, Home.class);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception HomeDAOImpl find_no_one: " + e);
+                }
+                finally
+                {
+                    homes.addAll(query.list());
+                    transaction.commit();
+                }
+                if (!homes.isEmpty())
+                    Singleton.getInstance().getHomeVector().addAll(homes);
+            }
+            else
+            {
+                Transaction transaction = session.beginTransaction();
+
+                try
+                {
+                    query = session.createQuery(hql, Home.class);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception HomeDAOImpl find_no_one: " + e);
+                }
+                finally
+                {
+                    homes.addAll(query.list());
+                }
+                if (!homes.isEmpty())
+                    Singleton.getInstance().getHomeVector().addAll(homes);
+            }
+        }
+        else
+        {
+            session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+            if (session.getTransaction().isActive())
+            {
+                Transaction transaction = session.getTransaction();
+
+                try
+                {
+                    query = session.createQuery(hql, Home.class);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception HomeDAOImpl find_no_one: " + e);
+                }
+                finally
+                {
+                    homes.addAll(query.list());
+                    transaction.commit();
+                }
+                if (!homes.isEmpty())
+                    Singleton.getInstance().getHomeVector().addAll(homes);
+            }
+            else
+            {
+                Transaction transaction = session.beginTransaction();
+
+                try
+                {
+                    query = session.createQuery(hql, Home.class);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception HomeDAOImpl find_no_one: " + e);
+                }
+                finally
+                {
+                    homes.addAll(query.list());
+                    transaction.commit();
+                }
+                if (!homes.isEmpty())
+                    Singleton.getInstance().getHomeVector().addAll(homes);
+            }
+        }
+
+        return homes;
+    }
+
     @Override
     public Home findById(int id)
     {
@@ -53,14 +238,7 @@ public class HomeDAOImpl implements HomeDAO
     {
         Query query = null;
         List<Home> homes = new ArrayList<>();
-
-        for (Home tmp : Singleton.getInstance().getHomeVector())
-        {
-            if(tmp.getAddress().toLowerCase().contains(_address.toLowerCase()))
-            {
-                homes.add(tmp);
-            }
-        }
+        List<Home> buf_homes = new ArrayList<>();
 
         if(homes.isEmpty())
         {
@@ -77,13 +255,28 @@ public class HomeDAOImpl implements HomeDAO
             }
             finally
             {
-                homes.addAll(query.list());
-//                HibernateSessionFactoryUtil.getSessionFactory().close();
+                buf_homes.addAll(query.list());
+                boolean find_contains = false;
+
+                for (Home tmp1 : buf_homes)
+                {
+                    find_contains=false;
+
+                    for (Home tmp : Singleton.getInstance().getHomeVector())
+                    {
+                        if (tmp.getAddress().contains(tmp1.getAddress()))
+                            find_contains = true;
+                    }
+
+                    if (find_contains == false)
+                        homes.add(tmp1);
+                }
             }
 
             if(!homes.isEmpty())
-            Singleton.getInstance().getHomeVector().addAll(homes);
+                Singleton.getInstance().getHomeVector().addAll(homes);
         }
+
         return homes;
     }
 
@@ -92,14 +285,7 @@ public class HomeDAOImpl implements HomeDAO
     {
         Query query = null;
         List<Home> homes = new ArrayList<>();
-
-        for (Home tmp : Singleton.getInstance().getHomeVector())
-        {
-            if(tmp.getNumber_of_flat().toLowerCase().contains(_number_of_flat.toLowerCase()))
-            {
-                homes.add(tmp);
-            }
-        }
+        List<Home> buf_homes = new ArrayList<>();
 
         if(homes.isEmpty())
         {
@@ -116,12 +302,26 @@ public class HomeDAOImpl implements HomeDAO
             }
             finally
             {
-                homes.addAll(query.list());
-//                HibernateSessionFactoryUtil.getSessionFactory().close();
+                buf_homes.addAll(query.list());
+                boolean find_contains = false;
+
+                for (Home tmp1 : buf_homes)
+                {
+                    find_contains=false;
+
+                    for (Home tmp : Singleton.getInstance().getHomeVector())
+                    {
+                        if (tmp.getNumber_of_flat().contains(tmp1.getNumber_of_flat()))
+                            find_contains = true;
+                    }
+
+                    if (find_contains == false)
+                        homes.add(tmp1);
+                }
             }
 
             if(!homes.isEmpty())
-            Singleton.getInstance().getHomeVector().addAll(homes);
+                Singleton.getInstance().getHomeVector().addAll(homes);
         }
 
         return homes;
@@ -134,13 +334,81 @@ public class HomeDAOImpl implements HomeDAO
         {
             Singleton.getInstance().getHomeVector().add(home);
 
-            Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-            Transaction save_query = session.beginTransaction();
-            session.persist(home);
-            save_query.commit();
-            session.close();
+            Session session = null;
+
+            if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction save_query = session.getTransaction();
+
+                    try
+                    {
+                        session.persist(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl save: " + e);
+                    }
+                    finally
+                    {
+                        save_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction save_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.persist(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl update: " + e);
+                    }
+                }
+            }
+            else
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction save_query = session.getTransaction();
+
+                    try
+                    {
+                        session.persist(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl save: " + e);
+                    }
+                    finally
+                    {
+                        save_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction save_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.persist(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl save: " + e);
+                    }
+                }
+            }
         }
-        else return;
+        else
+            return;
     }
 
     @Override
@@ -150,13 +418,81 @@ public class HomeDAOImpl implements HomeDAO
         {
             Singleton.getInstance().getHomeVector().set(Singleton.getInstance().getHomeVector().indexOf(home), home);
 
-            Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-            Transaction update_query = session.beginTransaction();
-            session.merge(home);
-            update_query.commit();
-            session.close();
+            Session session = null;
+
+            if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction update_query = session.getTransaction();
+
+                    try
+                    {
+                        session.merge(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl update: " + e);
+                    }
+                    finally
+                    {
+                        update_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction update_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.merge(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl update: " + e);
+                    }
+                }
+            }
+            else
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction update_query = session.getTransaction();
+
+                    try
+                    {
+                        session.merge(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl update: " + e);
+                    }
+                    finally
+                    {
+                        update_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction update_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.merge(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl update: " + e);
+                    }
+                }
+            }
         }
-        else return;
+        else
+            return;
     }
 
     @Override
@@ -166,13 +502,81 @@ public class HomeDAOImpl implements HomeDAO
         {
             Singleton.getInstance().getHomeVector().remove(home);
 
-            Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-            Transaction delete_query = session.beginTransaction();
-            session.delete(home);
-            delete_query.commit();
-            session.close();
+            Session session = null;
+
+            if (HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession().isOpen())
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction delete_query = session.getTransaction();
+
+                    try
+                    {
+                        session.delete(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl delete: " + e);
+                    }
+                    finally
+                    {
+                        delete_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction delete_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.delete(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl delete: " + e);
+                    }
+                }
+            }
+            else
+            {
+                session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+                if (session.getTransaction().isActive())
+                {
+                    Transaction delete_query = session.getTransaction();
+
+                    try
+                    {
+                        session.delete(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl delete: " + e);
+                    }
+                    finally
+                    {
+                        delete_query.commit();
+                    }
+                }
+                else
+                {
+                    Transaction delete_query = session.beginTransaction();
+
+                    try
+                    {
+                        session.delete(home);
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("HomeDAOImpl delete: " + e);
+                    }
+                }
+            }
         }
-        else return;
+        else
+            return;
     }
 
     @Override

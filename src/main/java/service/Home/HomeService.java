@@ -10,6 +10,24 @@ public class HomeService
 {
     private HomeDAOImpl homeDAO = new HomeDAOImpl();
 
+    /**
+     * Получить количество существующих записей
+     * @return int=count
+     */
+    public int get_count_nodes()
+    {return homeDAO.get_count_nodes();}
+
+    /**
+     * Найти записи в количестве step
+     * @param id
+     * @param step
+     * @return List
+     */
+    public List<Home> findNoOneHomeById(int id, int step)
+    {
+        return homeDAO.findNoOneById(id, step);
+    }
+
     public HomeService(){}
 
     /**

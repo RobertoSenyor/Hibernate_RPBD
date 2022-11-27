@@ -27,7 +27,7 @@ public class Home
     @Column (name = "number_of_flat")
     private String number_of_flat;
 
-    @OneToMany (mappedBy = "home", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany (mappedBy = "home", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.MERGE)
     private List<Client> clients;
 
     protected Home(){}
@@ -81,8 +81,12 @@ public class Home
     @Override
     public String toString()
     {
-        return  "address='" + address + '\'' +
-                ", number_of_flat='" + number_of_flat + '\'';
+        String out_string_data = String.format("%-20s    %7s", address,number_of_flat);
+
+        return out_string_data;
+
+//        return  "address='" + address + '\'' +
+//                ", number_of_flat='" + number_of_flat + '\'';
 
 //        return "models.Home{" +
 //                "id=" + id +

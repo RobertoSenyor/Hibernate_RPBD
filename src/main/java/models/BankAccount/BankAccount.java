@@ -3,6 +3,8 @@ package models.BankAccount;
 import models.Client.Client;
 import models.Deposit.Deposit;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,11 +33,12 @@ public class BankAccount
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bankaccount_SEQ")
     private int id;
 
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn (name = "client_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Client client;
 
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn (name = "deposit_id")
     private Deposit deposit;
 
@@ -65,7 +68,7 @@ public class BankAccount
 
         this.date_open = dateFormat.parse(date_open);
 
-        this.date_open = dateFormat.parse(date_close);
+        this.date_close = dateFormat.parse(date_close);
 
         this.money_sum = money_sum;
     }

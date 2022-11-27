@@ -11,6 +11,24 @@ public class ClientService
     private ClientDAOImpl clientDAO = new ClientDAOImpl();
 
     /**
+     * Получить количество существующих записей
+     * @return int=count
+     */
+    public int get_count_nodes()
+    {return clientDAO.get_count_nodes();}
+
+    /**
+     * Найти записи в количестве step
+     * @param id
+     * @param step
+     * @return List
+     */
+    public List<Client> findNoOneClientById(int id, int step)
+    {
+        return clientDAO.findNoOneById(id, step);
+    }
+
+    /**
      * Найти запись по id (сначала в памяти, потом в БД)
      * @param id
      * @return Object=Client

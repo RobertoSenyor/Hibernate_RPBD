@@ -35,7 +35,7 @@ public class Deposit
     @Column (name = "interest_rate")
     private int interest_rate;
 
-    @OneToMany (mappedBy = "deposit", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany (mappedBy = "deposit", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.MERGE)
     private List<BankAccount> bankAccounts;
 
     protected Deposit(){}
@@ -102,7 +102,7 @@ public class Deposit
     @Override
     public String toString()
     {
-        String out_string_data = String.format("%20s%5d%5d", name_of_deposit,storage_time,interest_rate);
+        String out_string_data = String.format("%-20s  %-5d         %-5d", name_of_deposit,storage_time,interest_rate);
 
         return out_string_data;
 

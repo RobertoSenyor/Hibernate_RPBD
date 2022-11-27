@@ -8,6 +8,20 @@ import java.util.List;
 public interface DepositDAO
 {
     /**
+     * Получить количество существующих записей
+     * @return int=count
+     */
+    public int get_count_nodes();
+
+    /**
+     * Найти записи в количестве step
+     * @param id
+     * @param step
+     * @return List
+     */
+    public List<Deposit> findNoOneById(int id, int step);
+
+    /**
      * Найти запись по id (сначала в памяти, потом в БД)
      * @param id
      * @return Object=Deposit
