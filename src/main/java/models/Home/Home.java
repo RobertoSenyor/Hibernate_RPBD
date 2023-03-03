@@ -1,8 +1,7 @@
-package Home;
-import Client.Client;
+package models.Home;
+import models.Client.Client;
 import jakarta.persistence.*;
 
-import javax.swing.event.CaretListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,11 @@ public class Home
      *  number_of_flat | character varying(255) |           | not null |
      */
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
+    @Id
+    @Column (name = "id")
+    @SequenceGenerator(name = "home_SEQ", sequenceName = "HOME_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "home_SEQ")
+    private int id;
 
     @Column (name = "address")
     private String address;
@@ -24,7 +27,7 @@ public class Home
     @Column (name = "number_of_flat")
     private String number_of_flat;
 
-    @OneToMany (mappedBy = "client", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany (mappedBy = "home", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.MERGE)
     private List<Client> clients;
 
     protected Home(){}
@@ -78,10 +81,17 @@ public class Home
     @Override
     public String toString()
     {
-        return "Home{" +
-                "id=" + id +
-                ", address='" + address + '\'' +
-                ", number_of_flat='" + number_of_flat + '\'' +
-                "}";
+        String out_string_data = String.format("%-20s    %7s", address,number_of_flat);
+
+        return out_string_data;
+
+//        return  "address='" + address + '\'' +
+//                ", number_of_flat='" + number_of_flat + '\'';
+
+//        return "models.Home{" +
+//                "id=" + id +
+//                ", address='" + address + '\'' +
+//                ", number_of_flat='" + number_of_flat + '\'' +
+//                "}";
     }
 }

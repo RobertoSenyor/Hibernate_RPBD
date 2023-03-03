@@ -1,15 +1,13 @@
-package Deposit;
+package models.Deposit;
 
-import BankAccount.BankAccount;
-import Client.Client;
+import models.BankAccount.BankAccount;
 import jakarta.persistence.*;
-import org.hibernate.service.spi.InjectService;
 
-import javax.swing.event.CaretListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.DeflaterOutputStream;
 
+@Entity
+@Table (name = "deposit")
 public class Deposit
 {
     /**
@@ -22,7 +20,10 @@ public class Deposit
      *  interest_rate   | integer |           | not null |
      */
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Id
+    @Column (name = "id")
+    @SequenceGenerator(name = "deposit_SEQ", sequenceName = "DEPOSIT_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deposit_SEQ")
     private int id;
 
     @Column (name = "name_of_deposit")
@@ -34,7 +35,7 @@ public class Deposit
     @Column (name = "interest_rate")
     private int interest_rate;
 
-    @OneToMany (mappedBy = "bankaccount", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany (mappedBy = "deposit", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.MERGE)
     private List<BankAccount> bankAccounts;
 
     protected Deposit(){}
@@ -101,11 +102,19 @@ public class Deposit
     @Override
     public String toString()
     {
-        return "Deposit{" +
-                "id=" + id +
-                ",name_of_deposit='" + name_of_deposit + '\'' +
-                ", storage_time=" + storage_time +
-                ", interest_rate=" + interest_rate +
-                "}";
+        String out_string_data = String.format("%-20s  %-5d         %-5d", name_of_deposit,storage_time,interest_rate);
+
+        return out_string_data;
+
+//        return  "name_of_deposit='" + name_of_deposit + '\'' +
+//                ", storage_time='" + storage_time + '\'' +
+//                ", interest_rate='" + interest_rate + '\'';
+
+//        return "models.Deposit{" +
+//                "id=" + id +
+//                ",name_of_deposit='" + name_of_deposit + '\'' +
+//                ", storage_time=" + storage_time +
+//                ", interest_rate=" + interest_rate +
+//                "}";
     }
 }

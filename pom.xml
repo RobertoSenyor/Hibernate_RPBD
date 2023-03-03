@@ -9,20 +9,16 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-        <!-- PostegreSQL -->
         <dependency>
-            <groupId>org.jumpmind.symmetric.jdbc</groupId>
+            <groupId>org.postgresql<groupId/>
             <artifactId>postgresql</artifactId>
             <version>9.2-1002-jdbc4</version>
         </dependency>
-
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.1.5.Final</version>
         </dependency>
-
-        <!-- Hibernate -->
     </dependencies>
 
     <properties>
